@@ -3,71 +3,75 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include "helpers/line_parser.hpp"
 
 using namespace std;
 
 string eachLine;
-int i = 0;
-int sum = 0;
+// int i = 0;
+long sum = 0;
 
-struct {
-    int item_L;
-    int item_R;
-} values;
+// struct {
+//     int item_L;
+//     int item_R;
+// } values;
 
 vector <int> leftList;
 vector <int> rightList;
 vector <int> distace;
 
 
-void extractValues(string lineInput){
+// void extractValues(string lineInput){
 
-    lineInput.push_back(' ');
-    string tmpArr;
-    int i = 0;
-    int catcher = 0;
+//     lineInput.push_back(' ');
+//     string tmpArr;
+//     int i = 0;
+//     int catcher = 0;
 
-    while (i < (lineInput.length() + 1)){
-        if (lineInput[i] != ' '){
-            tmpArr += lineInput[i];
-        }
-        else{
-            if (tmpArr.length() > 2){
+//     while (i < (lineInput.length() + 1)){
+//         if (lineInput[i] != ' '){
+//             tmpArr += lineInput[i];
+//         }
+//         else{
+//             if (tmpArr.length() > 2){
                 
-                switch (catcher)
-                {
-                case 0:
-                    // cout << "Trying to convert value : " << tmpArr << '\n';
-                    values.item_L = stoi(tmpArr);
-                    catcher ++;
-                    tmpArr.erase();
-                    break;
+//                 switch (catcher)
+//                 {
+//                 case 0:
+//                     // cout << "Trying to convert value : " << tmpArr << '\n';
+//                     values.item_L = stoi(tmpArr);
+//                     catcher ++;
+//                     tmpArr.erase();
+//                     break;
 
-                case 1:
-                    values.item_R = stoi(tmpArr);
-                    break;
+//                 case 1:
+//                     values.item_R = stoi(tmpArr);
+//                     break;
 
-                default:
-                    cout << "unknown case occured" << '\n';
-                    break;
-                }
-           }
-        }
-        i++;
-    }
+//                 default:
+//                     cout << "unknown case occured" << '\n';
+//                     break;
+//                 }
+//            }
+//         }
+//         i++;
+//     }
 
-    // cout << "Extracted Values : " << values.item_L << " " << values.item_R << '\n';
+//     // cout << "Extracted Values : " << values.item_L << " " << values.item_R << '\n';
 
-}
+// }
 
 int main(){
     ifstream readTxtFile("data_dump.txt");
     cout << "Tried to read file" << '\n';
     if (readTxtFile.is_open()){
         while (getline(readTxtFile, eachLine)){
-            extractValues(eachLine);
-            leftList.push_back(values.item_L);
-            rightList.push_back(values.item_R);
+            // extractValues(eachLine);
+            // leftList.push_back(values.item_L);
+            // rightList.push_back(values.item_R);
+            auto [left, right] = parseLineToTwoInts(eachLine);
+            leftList.push_back(left);
+            rightList.push_back(right);
         }
     }
     else{
