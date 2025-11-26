@@ -5,6 +5,10 @@
         "filesystem": "cpp",
         "__locale": "cpp",
         "string_view": "cpp",
-        "__string": "cpp"
+        "__string": "cpp",
+        "cstddef": "cpp",
+        "iostream": "cpp",
+        "set": "cpp",
+        "unordered_map": "cpp"
     }
 }
