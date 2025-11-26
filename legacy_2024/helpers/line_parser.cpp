@@ -2,8 +2,10 @@
 #include <sstream>
 #include <stdexcept>
 
-std::pair<int, int> parseLineToTwoInts(const std::string& line) {
-    std::istringstream iss(line);
+using namespace std;
+
+pair<int, int> parseLineToTwoInts(const string& line) {
+    istringstream iss(line);
     int left = 0;
     int right = 0;
 
@@ -12,4 +14,17 @@ std::pair<int, int> parseLineToTwoInts(const std::string& line) {
     }
 
     return {left, right};
+}
+
+vector <int> parseLineMultiInts(const string& line){
+
+    vector<int> result;
+    istringstream inputLineStream(line);
+
+    int num;
+    while (inputLineStream >> num){
+        result.push_back(num);
+    }
+
+    return result;
 }
