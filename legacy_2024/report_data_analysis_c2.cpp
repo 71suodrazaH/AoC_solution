@@ -69,24 +69,7 @@ int main(){
     cout << "Number of valid reports: " << validReports.size() << endl;
     cout << "Number of fixed reports: " << fixedReports.size() << endl;
     cout << "Totla number of valid reports : " << validReports.size() + fixedReports.size() << endl;
-
-    // for (const auto& x : validReports) {
-    //     cout << x.first << " : [";
-    //     for (int v : x.second) {
-    //         cout << v << ' ';
-    //     }
-    //     cout << "]" << endl;
-    // }
-
     cout << "Number of Discarded reports: " << discardedReports.size() << endl;
-
-    // for (const auto& x : discardedReports) {
-    //     cout << x.first << " : [";
-    //     for (int v : x.second) {
-    //         cout << v << ' ';
-    //     }
-    //     cout << "]" << endl;
-    // }
 
     return 0;
 }
