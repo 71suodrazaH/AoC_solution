@@ -9,6 +9,7 @@
         "cstddef": "cpp",
         "iostream": "cpp",
         "set": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "fstream": "cpp"
     }
 }
