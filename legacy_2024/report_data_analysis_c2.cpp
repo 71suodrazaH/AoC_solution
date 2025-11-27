@@ -12,6 +12,7 @@ string eachLine;
 unordered_map<int, vector<int>> parsedReports;
 unordered_map<int, vector<int>> validReports;
 unordered_map<int, vector<int>> discardedReports;
+unordered_map<int, vector<int>> fixedReports;
 
 int position = 1;
 
@@ -41,29 +42,51 @@ int main(){
             validReports.insert(validReports.begin(), pair<int, vector<int>> (i, parsedReports.at(i)));
         }
         else{
-            discardedReports.insert(discardedReports.begin(), pair<int, vector<int>> (i, parsedReports.at(i)));
+            vector<int> changedReport = parsedReports.at(i);
+            bool damperResult = false;
+            for (int k = 0; k < changedReport.size(); k++){
+                auto changedCopy = changedReport;
+                changedCopy.erase(changedCopy.begin() + k);
+                damperResult = validityChecker(changedCopy);
+                if (damperResult){
+                    fixedReports.insert(fixedReports.begin(), pair<int, vector<int>>(i, changedCopy));
+                    for (const auto& x : fixedReports) {
+                        cout << "Fixed Report - " << x.first << " : [";
+                        for (int v : x.second) {
+                            cout << v << ' ';
+                        }
+                        cout << "]" << endl;
+                    }
+                    break;
+                }
+            }
+            if (!damperResult){
+                discardedReports.insert(discardedReports.begin(), pair<int, vector<int>> (i, parsedReports.at(i)));
+            }
         }
     }
 
     cout << "Number of valid reports: " << validReports.size() << endl;
+    cout << "Number of fixed reports: " << fixedReports.size() << endl;
+    cout << "Totla number of valid reports : " << validReports.size() + fixedReports.size() << endl;
 
-    for (const auto& x : validReports) {
-        cout << x.first << " : [";
-        for (int v : x.second) {
-            cout << v << ' ';
-        }
-        cout << "]" << endl;
-    }
+    // for (const auto& x : validReports) {
+    //     cout << x.first << " : [";
+    //     for (int v : x.second) {
+    //         cout << v << ' ';
+    //     }
+    //     cout << "]" << endl;
+    // }
 
     cout << "Number of Discarded reports: " << discardedReports.size() << endl;
 
-    for (const auto& x : discardedReports) {
-        cout << x.first << " : [";
-        for (int v : x.second) {
-            cout << v << ' ';
-        }
-        cout << "]" << endl;
-    }
+    // for (const auto& x : discardedReports) {
+    //     cout << x.first << " : [";
+    //     for (int v : x.second) {
+    //         cout << v << ' ';
+    //     }
+    //     cout << "]" << endl;
+    // }
 
     return 0;
 }
@@ -72,38 +95,41 @@ int main(){
 bool validityChecker(vector<int> report){
 
     int increasing_decreasing_trend = report.at(0) - report.at(1);
+    int nonConformaceCount = 0;
+    int nonConformanceIndex = -1;
 
-    if (increasing_decreasing_trend > 0){
+    if (increasing_decreasing_trend >= 0){
         for(int i = 0; i < report.size() - 1; i++ ){
             int diff = report.at(i+1) - report.at(i);
             if (diff > -4 && diff < 0){
                 continue;
             }
             else{
-                return false;
+                nonConformaceCount++;
+                nonConformanceIndex = i+1;
             }
         }
     }
 
-    else if (increasing_decreasing_trend < 0)
-    {
+    else {
         for(int i = 0; i < report.size() - 1; i++ ){
             int diff = report.at(i+1) - report.at(i);
             if (diff > 0 && diff < 4){
                 continue;
             }
             else{
-                return false;
+                nonConformaceCount++;
+                nonConformanceIndex = i+1;
             }
         }
     }
 
-    else {
+    if (nonConformaceCount > 0 ) {
         return false;
     }
-
-    return true;
-    
+    else {
+        return true;
+    }
 }
 
 
