@@ -10,6 +10,7 @@ string eachline;
 
 vector<vector<char>> puzzleData;
 string targetString = "XMAS";
+string crossMas = "MAS";
 bool printFuse = true;
 int printCount = 0;
 
@@ -19,6 +20,7 @@ uint16_t forwardnBackwardHorizontalCount(void);
 uint16_t forwardnBackwardVerticalCount(void);
 uint16_t forwardnBackwardRightDiagnolCount(void);
 uint16_t forwardnBackwardLeftDiagnolCount(void);
+uint16_t X_mas_match_counts(void);
 
 int main(){
 
@@ -39,20 +41,15 @@ int main(){
 
     inputPuzzleFile.close();
     
-    forwardnBackwardHorizontalCount();
-    forwardnBackwardVerticalCount();
-    forwardnBackwardRightDiagnolCount();
-    forwardnBackwardLeftDiagnolCount();
-    // for (int i = 0; i < puzzleData.size(); i++)
-    // {
-    //     for (int j = 0; j < puzzleData[i].size(); j++)
-    //     {
-    //         cout << puzzleData[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
+    // forwardnBackwardHorizontalCount();
+    // forwardnBackwardVerticalCount();
+    // forwardnBackwardRightDiagnolCount();
+    // forwardnBackwardLeftDiagnolCount();
 
-    cout << "Total XMAS counts: " << counts << endl;
+    // cout << "Total XMAS counts: " << counts << endl;
+
+    uint16_t xmas_counts = X_mas_match_counts();
+     cout << "Total X-MAS counts: " << xmas_counts << endl;
 
     return 0;
 }
@@ -123,6 +120,7 @@ uint16_t forwardnBackwardVerticalCount(void){
 uint16_t forwardnBackwardRightDiagnolCount(void){
     string forwardString;
     string reverseString;
+    uint16_t matches = 0;
 
     for (int i = 0; i < puzzleData.size() - targetString.size() + 1; i++)
     {
@@ -141,6 +139,7 @@ uint16_t forwardnBackwardRightDiagnolCount(void){
             // }
             if (forwardString == targetString || reverseString == targetString){
                 counts ++;
+                matches++;
                 // cout << "Forward String: " << forwardString << endl;
                 // cout << "Reverse String: " << reverseString << endl;
                 // cout << "Count: " << counts << endl;
@@ -149,11 +148,13 @@ uint16_t forwardnBackwardRightDiagnolCount(void){
             reverseString.clear();
         }
     }
+    return matches;
 }
 
 uint16_t forwardnBackwardLeftDiagnolCount(void){
     string forwardString;
     string reverseString;
+    uint16_t matches = 0;
 
     for (int i = 0; i < puzzleData.size() - targetString.size() + 1; i++)
     {
@@ -172,6 +173,7 @@ uint16_t forwardnBackwardLeftDiagnolCount(void){
             }
             if (forwardString == targetString || reverseString == targetString){
                 counts ++;
+                matches++;
                 // cout << "Forward String: " << forwardString << endl;
                 // cout << "Reverse String: " << reverseString << endl;
                 // cout << "Count: " << counts << endl;
@@ -180,4 +182,34 @@ uint16_t forwardnBackwardLeftDiagnolCount(void){
             reverseString.clear();
         }
     }
+    return matches;
+}
+
+uint16_t X_mas_match_counts(void){
+    string x1_string;
+    string x2_string;
+    string reverse_x1_string;
+    string reverse_x2_string;
+
+    uint16_t matches = 0;
+
+    for(int i = 1; i < puzzleData.size() - 1; i++){
+        for (int j = 1; j <= puzzleData[i].size() - 1; j++){
+            if (puzzleData[i][j] == 'A'){
+                x1_string = string(1, puzzleData[i-1][j-1]) + puzzleData[i][j] + puzzleData[i+1][j+1];
+                x2_string = string(1, puzzleData[i-1][j+1]) + puzzleData[i][j] + puzzleData[i+1][j-1];
+                reverse_x1_string = x1_string;
+                reverse_x2_string = x2_string;
+                reverse(reverse_x1_string.begin(), reverse_x1_string.end());
+                reverse(reverse_x2_string.begin(), reverse_x2_string.end());
+                if ((x1_string  == crossMas || reverse_x1_string == crossMas) && (x2_string == crossMas || reverse_x2_string == crossMas)){
+                    matches++;
+                    cout << "X1_string : " << x1_string << ", X2_string: " << x2_string << endl;
+                }
+            }
+        }
+    }
+
+    return matches;
+
 }
